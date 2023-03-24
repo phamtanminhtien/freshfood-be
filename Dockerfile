@@ -1,4 +1,4 @@
-FROM node:12.18.3-alpine3.9 AS build-stage
+FROM node:16-alpine as build-stage
 
 WORKDIR /usr/src/app
 
@@ -8,7 +8,7 @@ RUN npm install
 
 RUN npm run build
 
-FROM node:12.18.3-alpine3.9 AS production-stage
+FROM node:16-alpine as production-stage
 
 WORKDIR /usr/src/app
 
