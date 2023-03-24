@@ -16,5 +16,6 @@ COPY --from=build-stage /usr/src/app/dist ./dist
 
 COPY --from=build-stage /usr/src/app/node_modules ./node_modules
 
+COPY --from=build-stage /usr/src/app/package.json ./package.json
 
 CMD [ "npm", "start" ]
