@@ -85,5 +85,6 @@ jobs:
             -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
             --name=${{ secrets.CONTAINER_NAME }} \
             --restart=always \
+            --network=freshfood \
             -v /my/data/dir:/var/lib/${{ secrets.CONTAINER_NAME }} \
             -d ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
