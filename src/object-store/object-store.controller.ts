@@ -3,7 +3,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { ObjectStoreCreateDto } from './dto/object-store-create.dto';
 import { ObjectStoreService } from './object-store.service';
 
-@Controller('object-store')
+@Controller('object-stores')
 @ApiTags('ObjectStore')
 export class ObjectStoreController {
   constructor(private objectStoreService: ObjectStoreService) {}
