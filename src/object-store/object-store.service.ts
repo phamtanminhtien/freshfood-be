@@ -1,25 +1,27 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import { Inject, Injectable } from '@nestjs/common';
+import { Model } from 'mongoose';
 import * as hash from 'object-hash';
-import { In, Repository } from 'typeorm';
 import { ObjectStoreCreateDto } from './dto/object-store-create.dto';
-import { ObjectStore } from './entities/object-store.entity';
+import { ObjectStore } from './interfaces/object-store.interface';
+import { OBJECT_STORE_MODEL } from './object-store.providers';
 
 @Injectable()
 export class ObjectStoreService {
   constructor(
-    @InjectRepository(ObjectStore)
-    private objectStoreRepository: Repository<ObjectStore>,
+    @Inject(OBJECT_STORE_MODEL)
+    private catModel: Model<ObjectStore>,
   ) {}
 
   async create(objectStore: ObjectStoreCreateDto) {
     try {
       const hash_string = hash(objectStore);
 
-      return await this.objectStoreRepository.save({
+      const objectStoreModel = new this.catModel({
         hash: hash_string,
-        data: JSON.stringify(objectStore),
+        data: objectStore,
       });
+
+      return await objectStoreModel.save();
     } catch (error) {
       throw error;
     }
@@ -27,12 +29,7 @@ export class ObjectStoreService {
 
   async findByID(id: string) {
     try {
-      const objectStore = await this.objectStoreRepository.findOne({
-        where: {
-          id: id,
-        },
-      });
-      objectStore.data = JSON.parse(objectStore.data);
+      const objectStore = await this.catModel.findById(id);
       return objectStore;
     } catch (error) {
       throw error;
@@ -41,11 +38,8 @@ export class ObjectStoreService {
 
   async findByIDs(ids: string[]) {
     try {
-      const objectStore = await this.objectStoreRepository.findBy({
-        id: In(ids),
-      });
-      objectStore.forEach((element) => {
-        element.data = JSON.parse(element.data);
+      const objectStore = await this.catModel.find({
+        _id: { $in: ids },
       });
       return objectStore;
     } catch (error) {
@@ -55,10 +49,7 @@ export class ObjectStoreService {
 
   async findAll() {
     try {
-      const objectStore = await this.objectStoreRepository.find();
-      objectStore.forEach((element) => {
-        element.data = JSON.parse(element.data);
-      });
+      const objectStore = await this.catModel.find();
       return objectStore;
     } catch (error) {
       throw error;

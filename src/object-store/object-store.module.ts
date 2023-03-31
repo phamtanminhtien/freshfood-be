@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ObjectStore } from './entities/object-store.entity';
+import { DatabaseModule } from 'src/database/database.module';
 import { ObjectStoreController } from './object-store.controller';
+import { objectStoresProviders } from './object-store.providers';
 import { ObjectStoreService } from './object-store.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([ObjectStore])],
+  imports: [DatabaseModule],
   controllers: [ObjectStoreController],
-  providers: [ObjectStoreService],
+  providers: [ObjectStoreService, ...objectStoresProviders],
 })
 export class ObjectStoreModule {}
