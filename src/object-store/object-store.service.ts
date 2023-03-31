@@ -47,8 +47,12 @@ export class ObjectStoreService {
     }
   }
 
-  async findAll() {
+  async findAll(ids?: string[]) {
     try {
+      if (ids) {
+        return await this.findByIDs(ids);
+      }
+
       const objectStore = await this.catModel.find();
       return objectStore;
     } catch (error) {
