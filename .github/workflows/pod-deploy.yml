@@ -15,9 +15,9 @@ on:
         required: true
 #2
 env:
-  IMAGE_NAME: 'fresh-food-fe'
+  IMAGE_NAME: 'freshfood-be'
   REGISTRY: 'registry.minhxinchao.com'
-  CONTAINER_PORT: 80
+  CONTAINER_PORT: 3000
 
 #3
 jobs:
@@ -78,9 +78,9 @@ jobs:
             docker rm ${{ secrets.CONTAINER_NAME }}
             # Run container
             docker run -p ${{ secrets.PORT }}:${{ env.CONTAINER_PORT }} \
+            -e MONGODB_URI=${{ secrets.MONGODB_URI }} \
             --name=${{ secrets.CONTAINER_NAME }} \
             --restart=always \
+            --network=freshfood \
             -v /my/data/dir:/var/lib/${{ secrets.CONTAINER_NAME }} \
-            -e VITE_APP_BASE_URL=${{ secrets.VITE_APP_BASE_URL }} \
-            -e VITE_APP_CONTRACT_ADDRESS=${{ secrets.VITE_APP_CONTRACT_ADDRESS }} \
             -d ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
