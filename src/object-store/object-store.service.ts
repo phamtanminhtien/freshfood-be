@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
-import * as hash from 'object-hash';
+import { hashObject } from 'src/util/hash-object';
 import { ObjectStoreCreateDto } from './dto/object-store-create.dto';
 import { ObjectStore } from './interfaces/object-store.interface';
 import { OBJECT_STORE_MODEL } from './object-store.providers';
@@ -9,19 +9,19 @@ import { OBJECT_STORE_MODEL } from './object-store.providers';
 export class ObjectStoreService {
   constructor(
     @Inject(OBJECT_STORE_MODEL)
-    private catModel: Model<ObjectStore>,
+    private objectStoreModel: Model<ObjectStore>,
   ) {}
 
   async create(objectStore: ObjectStoreCreateDto) {
     try {
-      const hash_string = hash(objectStore);
+      const hash_string = hashObject(objectStore);
 
-      const objectStoreModel = new this.catModel({
+      const objectStoreModel = new this.objectStoreModel({
         hash: hash_string,
         data: objectStore,
       });
 
-      return await objectStoreModel.save();
+      return objectStoreModel.save();
     } catch (error) {
       throw error;
     }
@@ -29,7 +29,8 @@ export class ObjectStoreService {
 
   async findByID(id: string) {
     try {
-      const objectStore = await this.catModel.findById(id);
+      const objectStore = this.objectStoreModel.findById(id);
+
       return objectStore;
     } catch (error) {
       throw error;
@@ -38,7 +39,7 @@ export class ObjectStoreService {
 
   async findByIDs(ids: string[]) {
     try {
-      const objectStore = await this.catModel.find({
+      const objectStore = this.objectStoreModel.find({
         _id: { $in: ids },
       });
       return objectStore;
@@ -50,10 +51,10 @@ export class ObjectStoreService {
   async findAll(ids?: string[]) {
     try {
       if (ids) {
-        return await this.findByIDs(ids);
+        return this.findByIDs(ids);
       }
 
-      const objectStore = await this.catModel.find();
+      const objectStore = this.objectStoreModel.find();
       return objectStore;
     } catch (error) {
       throw error;
