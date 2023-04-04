@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { DEVICE_MODEL } from './device.providers';
 import { CreateDevice } from './dto/device-create.dto';
+import { UpdateDevice } from './dto/device-update.dto';
 import { Device } from './interfaces/device.interface';
 
 @Injectable()
@@ -28,6 +29,13 @@ export class DeviceService {
     return this.deviceModel.findByIdAndDelete(id);
   }
 
+  async findBySerial(serial: string): Promise<Device> {
+    const device = this.deviceModel.findOne({
+      serial: serial,
+    });
+    return device;
+  }
+
   async findByOwnerAddress(ownerAddress: string): Promise<Device[]> {
     const devices = this.deviceModel.find({
       ownerAddress: ownerAddress,
@@ -35,7 +43,7 @@ export class DeviceService {
     return devices;
   }
 
-  async updateById(id: string, device: Partial<CreateDevice>): Promise<Device> {
+  async updateById(id: string, device: UpdateDevice): Promise<Device> {
     return this.deviceModel.findOneAndUpdate(
       {
         _id: id,

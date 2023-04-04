@@ -2,27 +2,27 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class Station {
   @ApiProperty()
-  name: string;
+  name?: string;
 
   @ApiProperty()
-  longitude: number;
+  longitude?: number;
 
   @ApiProperty()
-  latitude: number;
+  latitude?: number;
 }
 
-export class CreateDevice {
+export class UpdateDevice {
   @ApiProperty()
-  ownerAddress: string;
+  ownerAddress?: string;
 
   @ApiProperty()
-  serial: string;
+  serial?: string;
 
   @ApiProperty({
     isArray: true,
     type: Station,
   })
-  stations: Station[];
+  stations?: Station[];
 
   @ApiProperty()
   active?: boolean;

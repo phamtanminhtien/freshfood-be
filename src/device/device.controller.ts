@@ -11,6 +11,7 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { DeviceService } from './device.service';
 import { CreateDevice } from './dto/device-create.dto';
+import { UpdateDevice } from './dto/device-update.dto';
 
 @Controller('devices')
 @ApiTags('Devices')
@@ -22,7 +23,7 @@ export class DeviceController {
     try {
       return this.deviceService.create(device);
     } catch (error) {
-      console.log(error);
+      throw error;
     }
   }
 
@@ -31,7 +32,7 @@ export class DeviceController {
     try {
       return this.deviceService.findAll();
     } catch (error) {
-      console.log(error);
+      throw error;
     }
   }
 
@@ -40,7 +41,7 @@ export class DeviceController {
     try {
       return this.deviceService.findById(id);
     } catch (error) {
-      console.log(error);
+      throw error;
     }
   }
 
@@ -49,37 +50,34 @@ export class DeviceController {
     try {
       return this.deviceService.deleteById(id);
     } catch (error) {
-      console.log(error);
+      throw error;
     }
   }
 
-  @Get('/owner/:ownerAddress')
+  @Get('/serial/:serial')
+  async findBySerial(@Param('serial') serial: string) {
+    try {
+      return this.deviceService.findBySerial(serial);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  @Get('/owner-address/:ownerAddress')
   async findByOwnerAddress(@Param('ownerAddress') ownerAddress: string) {
     try {
       return this.deviceService.findByOwnerAddress(ownerAddress);
     } catch (error) {
-      console.log(error);
+      throw error;
     }
   }
 
   @Put('/:id')
-  async updateById(@Param('id') id: string, @Body() device: CreateDevice) {
+  async updateById(@Param('id') id: string, @Body() device: UpdateDevice) {
     try {
       return this.deviceService.updateById(id, device);
     } catch (error) {
-      console.log(error);
-    }
-  }
-
-  @Patch('/:id')
-  async patchById(
-    @Param('id') id: string,
-    @Body() device: Partial<CreateDevice>,
-  ) {
-    try {
-      return this.deviceService.updateById(id, device);
-    } catch (error) {
-      console.log(error);
+      throw error;
     }
   }
 }
