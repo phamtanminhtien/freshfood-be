@@ -11,4 +11,6 @@ export interface Device extends Document {
   readonly serial: string;
   readonly stations: Station[];
   readonly active: boolean;
+  readonly nextAddress: string;
+  readonly productId: number;
 }

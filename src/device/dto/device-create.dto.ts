@@ -25,5 +25,11 @@ export class CreateDevice {
   stations: Station[];
 
   @ApiProperty()
+  nextAddress: string;
+
+  @ApiProperty()
   active?: boolean;
+
+  @ApiProperty()
+  productId?: number;
 }

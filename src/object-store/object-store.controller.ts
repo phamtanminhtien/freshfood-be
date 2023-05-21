@@ -27,7 +27,7 @@ export class ObjectStoreController {
   async getObjectStoreByID(@Param('id') id: string) {
     try {
       const res = await this.objectStoreService.findByID(id);
-      return res.data;
+      return res?.data || {};
     } catch (error) {
       throw error;
     }
@@ -38,7 +38,7 @@ export class ObjectStoreController {
     try {
       const ids = query.id && query.id.split(',');
       const res = await this.objectStoreService.findAll(ids);
-      return res.map((item) => item.data);
+      return res.map((item) => item?.data || '');
     } catch (error) {
       throw error;
     }
