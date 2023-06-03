@@ -12,8 +12,8 @@ export class MailService {
       subject: sendMailDto.subject,
       template: './information',
       context: {
-        name: 'as',
-        content: 'as',
+        name: sendMailDto.name,
+        content: sendMailDto.content,
       },
     });
   }
