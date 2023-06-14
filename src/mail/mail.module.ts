@@ -19,7 +19,7 @@ import { ConfigModule } from '@nestjs/config';
         },
       },
       defaults: {
-        from: '"Fresh Food" <minhxinchao@itacopywriting.com>',
+        from: '"Fresh Food" <freshfood@lalo.com.vn>',
       },
       template: {
         dir: join(__dirname, 'templates'),
